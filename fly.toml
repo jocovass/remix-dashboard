@@ -1,4 +1,4 @@
-app = "frivle-remix-5631"
+app = "frivle-remix"
 primary_region = "sjc"
 kill_signal = "SIGINT"
 kill_timeout = 5
