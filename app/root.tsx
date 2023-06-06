@@ -21,6 +21,7 @@ import {
 } from '@remix-run/react'
 import { ThemeSwitch, useTheme } from './routes/resources+/theme.tsx'
 import tailwindStylesheetUrl from './styles/tailwind.css'
+import fontStylestylesheetUrl from './styles/font.css'
 import { authenticator, getUserId } from './utils/auth.server.ts'
 import { ClientHintCheck, getHints } from './utils/client-hints.tsx'
 import { prisma } from './utils/db.server.ts'
@@ -35,6 +36,10 @@ import { makeTimings, time } from './utils/timing.server.ts'
 
 export const links: LinksFunction = () => {
 	return [
+		// Preload CSS as a resource to avoid render blocking
+		{ rel: 'preload', href: fontStylestylesheetUrl, as: 'style' },
+		{ rel: 'preload', href: tailwindStylesheetUrl, as: 'style' },
+		cssBundleHref ? { rel: 'preload', href: cssBundleHref, as: 'style' } : null,
 		{
 			rel: 'apple-touch-icon',
 			sizes: '180x180',
@@ -54,7 +59,7 @@ export const links: LinksFunction = () => {
 		},
 		{ rel: 'manifest', href: '/site.webmanifest' },
 		{ rel: 'icon', href: '/favicon.ico' },
-		{ rel: 'stylesheet', href: '/fonts/nunito-sans/font.css' },
+		{ rel: 'stylesheet', href: fontStylestylesheetUrl },
 		{ rel: 'stylesheet', href: tailwindStylesheetUrl },
 		cssBundleHref ? { rel: 'stylesheet', href: cssBundleHref } : null,
 	].filter(Boolean)
